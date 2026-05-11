@@ -11,7 +11,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options):
     #region Database Tables
     public DbSet<Booking> Bookings { get; set; }
     public DbSet<Patient> Patients { get; set; }
-    public DbSet<PatientDetails> PatientDetails { get; set; }
     public DbSet<Physician> Physicians { get; set; }
     public DbSet<PhysicianAvailability> PhysicianAvailabilities { get; set; }
     #endregion

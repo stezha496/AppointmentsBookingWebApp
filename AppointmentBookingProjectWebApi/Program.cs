@@ -63,8 +63,12 @@ public class Program
 
         // Add Repositories
         builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();
+        builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+        builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+        builder.Services.AddScoped<IPhysicianRepository, PhysicianRepository>();
+        builder.Services.AddScoped<IPhysicianAvailabilityRepository, PhysicianAvailabilityRepository>();
 
-        // Swashbuckle
+        // Swashbuckle (swagger)
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 

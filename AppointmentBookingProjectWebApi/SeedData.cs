@@ -50,8 +50,10 @@ public class SeedData
                 context.Patients.Add(new Patient
                 {
                     Name = "Test Patient 1",
-                    Age = 11,
-                    Gender = "Male",
+                    Age = 30,
+                    Gender = "Female",
+                    Height = 150.0,
+                    Weight = 132.2,
                     PhoneNumber = pUser1.PhoneNumber,
                     Username = pUser1.UserName,
                     Email = pUser1.Email,
@@ -78,7 +80,9 @@ public class SeedData
                 {
                     Name = "Test Patient 2",
                     Age = 22,
-                    Gender = "Female",
+                    Height = 180.2,
+                    Weight = 170.0,
+                    Gender = "Male",
                     PhoneNumber = pUser2.PhoneNumber,
                     Username = pUser2.UserName,
                     Email = pUser2.Email,
@@ -108,7 +112,6 @@ public class SeedData
                 context.Physicians.Add(new Physician
                 {
                     Name = "Test Physician 1",
-                    IsAvailable = true,
                     PhoneNumber = phyUser1.PhoneNumber,
                     Username = phyUser1.UserName,
                     Email = phyUser1.Email,
@@ -134,7 +137,6 @@ public class SeedData
                 context.Physicians.Add(new Physician
                 {
                     Name = "Test Physician 2",
-                    IsAvailable = false,
                     PhoneNumber = phyUser2.PhoneNumber,
                     Username = phyUser2.UserName,
                     Email = phyUser2.Email,
@@ -145,72 +147,194 @@ public class SeedData
 
         #endregion
 
-        // TODO: Connect to Patient, Physician, PatientDetails
         #region Create Bookings
         // Seed if table is empty
         if (!await context.Bookings.AnyAsync())
         {
-            List<Booking> bookingSeedData = new List<Booking>
-            {
-                new Booking { Status = BookingStatus.Pending, ReasonForVisit = "High fever", Created = DateTime.Now },
-                new Booking { Status = BookingStatus.Confirmed, ReasonForVisit = "Pregnant", Created = DateTime.Now },
-                new Booking { Status = BookingStatus.Cancelled, ReasonForVisit = "Fungal infection", Created = DateTime.Now },
-                new Booking { Status = BookingStatus.Confirmed, ReasonForVisit = "Cancer check up", Created = DateTime.Now },
-                new Booking { Status = BookingStatus.Cancelled, ReasonForVisit = "Broken arm", Created = DateTime.Now },
-                new Booking { Status = BookingStatus.Pending, ReasonForVisit = "Drug addiction treatment", Created = DateTime.Now },
-            };
+            List<Booking> bookingSeedData = new List<Booking>{
+    new Booking
+    {
+        PatientId = 1,
+        PhysicianId = 1,
+        Status = BookingStatus.Pending,
+        ReasonForVisit = "High fever",
+        BookedTimeStart = new DateTime(2026, 1, 12, 9, 0, 0),
+        BookedTimeDuration = (int)BookingDuration.ThirtyMinutes,
+        Created = new DateTime(2026, 1, 10, 14, 23, 0)
+    },
 
-            //await context.Bookings.AddRangeAsync(bookingSeedData);
-            //await context.SaveChangesAsync();
+    new Booking
+    {
+        PatientId = 1,
+        PhysicianId = 1,
+        Status = BookingStatus.Confirmed,
+        ReasonForVisit = "Pregnant",
+        BookedTimeStart = new DateTime(2026, 2, 3, 11, 0, 0),
+        BookedTimeDuration = (int)BookingDuration.FourtyFiveMinutes,
+        Created = new DateTime(2026, 1, 29, 8, 41, 0)
+    },
+
+    new Booking
+    {
+        PatientId = 1,
+        PhysicianId = 1,
+        Status = BookingStatus.Cancelled,
+        ReasonForVisit = "Fungal infection",
+        BookedTimeStart = new DateTime(2026, 3, 18, 14, 0, 0),
+        BookedTimeDuration = (int)BookingDuration.SixtyMinutes,
+        Created = new DateTime(2026, 3, 12, 16, 5, 0)
+    },
+
+    new Booking
+    {
+        PatientId = 2,
+        PhysicianId = 2,
+        Status = BookingStatus.Pending,
+        ReasonForVisit = "Cancer check up",
+        BookedTimeStart = new DateTime(2026, 5, 7, 10, 0, 0),
+        BookedTimeDuration = (int)BookingDuration.ThirtyMinutes,
+        Created = new DateTime(2026, 5, 1, 9, 17, 0)
+    },
+
+    new Booking
+    {
+        PatientId = 2,
+        PhysicianId = 2,
+        Status = BookingStatus.Pending,
+        ReasonForVisit = "Broken arm",
+        BookedTimeStart = new DateTime(2026, 7, 22, 13, 0, 0),
+        BookedTimeDuration = (int)BookingDuration.FourtyFiveMinutes,
+        Created = new DateTime(2026, 7, 15, 11, 52, 0)
+    },
+
+    new Booking
+    {
+        PatientId = 2,
+        PhysicianId = 2,
+        Status = BookingStatus.Pending,
+        ReasonForVisit = "Drug addiction treatment",
+        BookedTimeStart = new DateTime(2026, 10, 9, 15, 0, 0),
+        BookedTimeDuration = (int)BookingDuration.SixtyMinutes,
+        Created = new DateTime(2026, 10, 2, 13, 38, 0)
+    },
+};
+
+            await context.Bookings.AddRangeAsync(bookingSeedData);
+            await context.SaveChangesAsync();
 
             Console.WriteLine("Bookings Seeded");
         }
         #endregion
 
-        // TODO: Connect to Patient
-        #region Create PatientDetails
-        // Seed if table is empty
-        if (!await context.PatientDetails.AnyAsync())
-        {
-            List<PatientDetails> detailsSeedData = new List<PatientDetails>
-            {
-                new PatientDetails { },
-                new PatientDetails { },
-                new PatientDetails { },
-                new PatientDetails { },
-                new PatientDetails { },
-                new PatientDetails { },
-            };
-
-            //await context.PatientDetails.AddRangeAsync(detailsSeedData);
-            //await context.SaveChangesAsync();
-
-            Console.WriteLine("Patient Details Seeded");
-        }
-        #endregion
-
-        // TODO: Connect to Physician
         #region Create PhysicianAvailability
         // Seed if table is empty
         if (!await context.PhysicianAvailabilities.AnyAsync())
         {
-            List<PhysicianAvailability> availabilitiesSeedData = new List<PhysicianAvailability>
-            {
-                new PhysicianAvailability { },
-                new PhysicianAvailability { },
-                new PhysicianAvailability { },
-                new PhysicianAvailability { },
-                new PhysicianAvailability { },
-                new PhysicianAvailability { },
-            };
+            List<PhysicianAvailability> availabilitiesSeedData = new List<PhysicianAvailability>{
+    new PhysicianAvailability
+    {
+        PhysicianId = 1,
+        IsAvailable = true,
+        StartTime = new DateTime(2026, 1, 5, 9, 0, 0),
+        EndTime = new DateTime(2026, 1, 5, 10, 0, 0)
+    },
 
-            //await context.PhysicianAvailabilities.AddRangeAsync(availabilitiesSeedData);
-            //await context.SaveChangesAsync();
+    new PhysicianAvailability
+    {
+        PhysicianId = 1,
+        IsAvailable = false,
+        StartTime = new DateTime(2026, 2, 14, 13, 0, 0),
+        EndTime = new DateTime(2026, 2, 14, 14, 0, 0)
+    },
+
+    new PhysicianAvailability
+    {
+        PhysicianId = 1,
+        IsAvailable = true,
+        StartTime = new DateTime(2026, 3, 21, 15, 0, 0),
+        EndTime = new DateTime(2026, 3, 21, 16, 0, 0)
+    },
+
+    new PhysicianAvailability
+    {
+        PhysicianId = 2,
+        IsAvailable = false,
+        StartTime = new DateTime(2026, 5, 2, 8, 0, 0),
+        EndTime = new DateTime(2026, 5, 2, 9, 0, 0)
+    },
+
+    new PhysicianAvailability
+    {
+        PhysicianId = 2,
+        IsAvailable = false,
+        StartTime = new DateTime(2026, 7, 18, 11, 0, 0),
+        EndTime = new DateTime(2026, 7, 18, 12, 0, 0)
+    },
+
+    new PhysicianAvailability
+    {
+        PhysicianId = 2,
+        IsAvailable = true,
+        StartTime = new DateTime(2026, 9, 30, 14, 0, 0),
+        EndTime = new DateTime(2026, 9, 30, 15, 0, 0)
+    },
+
+    // Matching booking times from above mock data (not available)
+
+    new PhysicianAvailability
+    {
+        PhysicianId = 1,
+        IsAvailable = false,
+        StartTime = new DateTime(2026, 1, 12, 9, 0, 0),
+        EndTime = new DateTime(2026, 1, 12, 10, 0, 0)
+    },
+
+    new PhysicianAvailability
+    {
+        PhysicianId = 1,
+        IsAvailable = false,
+        StartTime = new DateTime(2026, 2, 3, 11, 0, 0),
+        EndTime = new DateTime(2026, 2, 3, 12, 0, 0)
+    },
+
+    new PhysicianAvailability
+    {
+        PhysicianId = 1,
+        IsAvailable = false,
+        StartTime = new DateTime(2026, 3, 18, 14, 0, 0),
+        EndTime = new DateTime(2026, 3, 18, 15, 0, 0)
+    },
+
+    new PhysicianAvailability
+    {
+        PhysicianId = 2,
+        IsAvailable = false,
+        StartTime = new DateTime(2026, 5, 7, 10, 0, 0),
+        EndTime = new DateTime(2026, 5, 7, 11, 0, 0)
+    },
+
+    new PhysicianAvailability
+    {
+        PhysicianId = 2,
+        IsAvailable = false,
+        StartTime = new DateTime(2026, 7, 22, 13, 0, 0),
+        EndTime = new DateTime(2026, 7, 22, 14, 0, 0)
+    },
+
+    new PhysicianAvailability
+    {
+        PhysicianId = 2,
+        IsAvailable = false,
+        StartTime = new DateTime(2026, 10, 9, 15, 0, 0),
+        EndTime = new DateTime(2026, 10, 9, 16, 0, 0)
+    }
+};
+            await context.PhysicianAvailabilities.AddRangeAsync(availabilitiesSeedData);
+            await context.SaveChangesAsync();
 
             Console.WriteLine("Physician Availability Seeded");
         }
         #endregion
 
-        //Console.WriteLine("Seeded");
     }
 }

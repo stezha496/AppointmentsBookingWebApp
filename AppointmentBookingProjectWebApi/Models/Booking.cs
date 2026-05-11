@@ -14,7 +14,10 @@ public class Booking
     // This will be set at the time of creation to DateTime.Now
     public DateTime? Created { get; set; }
 
-    public PatientDetails? details { get; set; }
+    public DateTime? BookedTimeStart { get; set; }
+
+    // This is in minutes
+    public int? BookedTimeDuration { get; set; }
 
     public int? PhysicianId { get; set; }
     public Physician? Physician { get; set; }

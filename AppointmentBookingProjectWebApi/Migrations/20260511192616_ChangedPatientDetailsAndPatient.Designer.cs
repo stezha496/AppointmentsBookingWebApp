@@ -3,6 +3,7 @@ using System;
 using AppointmentBookingProjectWebApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppointmentBookingProjectWebApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260511192616_ChangedPatientDetailsAndPatient")]
+    partial class ChangedPatientDetailsAndPatient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.7");
@@ -22,12 +25,6 @@ namespace AppointmentBookingProjectWebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<int?>("BookedTimeDuration")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("BookedTimeStart")
-                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("Created")
                         .HasColumnType("TEXT");
@@ -98,6 +95,9 @@ namespace AppointmentBookingProjectWebApi.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool?>("IsAvailable")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
@@ -120,9 +120,6 @@ namespace AppointmentBookingProjectWebApi.Migrations
 
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool?>("IsAvailable")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("PhysicianId")
                         .HasColumnType("INTEGER");

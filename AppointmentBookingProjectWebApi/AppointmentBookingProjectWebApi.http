@@ -1,6 +1,6 @@
 @AppointmentBookingProjectWebApi_HostAddress = http://localhost:5183
 
-GET {{AppointmentBookingProjectWebApi_HostAddress}}/weatherforecast/
+GET {{AppointmentBookingProjectWebApi_HostAddress}}
 Accept: application/json
 
 ###

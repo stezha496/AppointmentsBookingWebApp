@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentBookingProjectWebApi.Controllers;
 
-[Authorize]
+//[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class AppUserController : ControllerBase
@@ -14,8 +14,7 @@ public class AppUserController : ControllerBase
     private readonly IAppUserRepository _userRepository;
     private UserManager<IdentityUser> userManager;
 
-    public AppUserController
-        (
+    public AppUserController(
         IAppUserRepository userRepository,
         UserManager<IdentityUser> userManager
         )

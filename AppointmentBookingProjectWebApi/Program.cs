@@ -64,6 +64,10 @@ public class Program
         // Add Repositories
         builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();
 
+        // Swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+
         var app = builder.Build();
         
         // Seed Data
@@ -73,6 +77,8 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             //app.MapOpenApi();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
 
         app.UseAuthorization();

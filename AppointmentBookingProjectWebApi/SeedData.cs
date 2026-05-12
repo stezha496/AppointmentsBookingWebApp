@@ -50,11 +50,6 @@ public class SeedData
                 context.Patients.Add(new Patient
                 {
                     Name = "Test Patient 1",
-                    Age = 30,
-                    Gender = "Female",
-                    Height = 150.0,
-                    Weight = 132.2,
-                    PhoneNumber = pUser1.PhoneNumber,
                     Username = pUser1.UserName,
                     Email = pUser1.Email,
                 });
@@ -79,11 +74,6 @@ public class SeedData
                 context.Patients.Add(new Patient
                 {
                     Name = "Test Patient 2",
-                    Age = 22,
-                    Height = 180.2,
-                    Weight = 170.0,
-                    Gender = "Male",
-                    PhoneNumber = pUser2.PhoneNumber,
                     Username = pUser2.UserName,
                     Email = pUser2.Email,
                 });
@@ -336,5 +326,50 @@ public class SeedData
         }
         #endregion
 
+        #region Create Patient Details
+        if (!await context.PatientDetails.AnyAsync())
+        {
+            List<PatientDetails> patientDetailsSeedData = new List<PatientDetails>
+{
+    new PatientDetails
+    {
+        Age = 24,
+        Gender = "Female",
+        Height = 165.4,
+        Weight = 132.7,
+        PhoneNumber = "111-222-3333",
+        Created = new DateTime(2026, 1, 15, 10, 30, 0),
+        patientId = 1
+    },
+
+    new PatientDetails
+    {
+        Age = 37,
+        Gender = "Male",
+        Height = 178.2,
+        Weight = 185.1,
+        PhoneNumber = "222-333-4444",
+        Created = new DateTime(2026, 3, 8, 14, 45, 0),
+        patientId = 2
+    },
+
+    new PatientDetails
+    {
+        Age = 29,
+        Gender = "Female",
+        Height = 160.0,
+        Weight = 120.5,
+        PhoneNumber = "333-444-5555",
+        Created = new DateTime(2026, 6, 21, 9, 15, 0),
+        patientId = 1
     }
+};
+            await context.PatientDetails.AddRangeAsync(patientDetailsSeedData);
+            await context.SaveChangesAsync();
+
+            Console.WriteLine("Patient Details Seeded");
+        }
+
+        #endregion
+        }
 }

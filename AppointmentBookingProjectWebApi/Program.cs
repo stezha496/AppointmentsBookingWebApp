@@ -3,6 +3,7 @@ using AppointmentBookingProjectWebApi.Models;
 using AppointmentBookingProjectWebApi.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace AppointmentBookingProjectWebApi;
 
@@ -14,7 +15,13 @@ public class Program
 
         // Add services to the container.
 
-        builder.Services.AddControllers();
+        // .AddJsonOptions is important since it stops circular reference error.
+        // When JSON tries to serialize Booking, it includes Physician,
+        // which includes its list of Bookings, which includes Physician again and it loops forever.
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        }); ;
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         //builder.Services.AddOpenApi();
 

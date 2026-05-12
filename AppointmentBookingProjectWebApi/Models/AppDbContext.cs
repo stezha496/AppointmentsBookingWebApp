@@ -11,6 +11,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options):
     #region Database Tables
     public DbSet<Booking> Bookings { get; set; }
     public DbSet<Patient> Patients { get; set; }
+    public DbSet<PatientDetails> PatientDetails { get; set; }
     public DbSet<Physician> Physicians { get; set; }
     public DbSet<PhysicianAvailability> PhysicianAvailabilities { get; set; }
     #endregion
@@ -23,7 +24,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options):
     {
         base.OnModelCreating(modelBuilder);
 
-        // stores "Pending", "Confirmed", "Cancelled" as string instead of int
+        // stores "Pending", "Confirmed", "Cancelled" enum as string instead of int
         modelBuilder.Entity<Booking>()
             .Property(b => b.Status)
             .HasConversion<string>();

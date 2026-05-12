@@ -12,7 +12,7 @@ namespace AppointmentBookingProjectWebApi.Controllers;
  * 
  */
 
-//[Authorize]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class AppUserController : ControllerBase
@@ -34,7 +34,6 @@ public class AppUserController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
     public async Task<IActionResult> GetAllUsers()
     {
         List<IdentityUser> allUsers = await _userRepository.GetAllUsers();
@@ -68,7 +67,6 @@ public class AppUserController : ControllerBase
         return Ok(user);
     }
 
-    [Authorize]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {

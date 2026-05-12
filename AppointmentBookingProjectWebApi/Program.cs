@@ -47,27 +47,27 @@ public class Program
             .AddDefaultTokenProviders();
 
         // Configure Cookie Authentication
-        //builder.Services.ConfigureApplicationCookie(options =>
-        //{
-        //    // Where to redirect if not logged in
-        //    options.LoginPath = "/api/account/login";
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            // Where to redirect if not logged in
+            options.LoginPath = "/api/AppUser/login";
 
-        //    // Where to redirect if logged in but wrong role
-        //    options.AccessDeniedPath = "/api/account/access-denied";
+            // Where to redirect if logged in but wrong role
+            options.AccessDeniedPath = "/api/AppUser/access-denied";
 
-        //    // How long the cookie lasts
-        //    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+            // How long the cookie lasts
+            options.ExpireTimeSpan = TimeSpan.FromHours(1);
 
-        //    // Cookie name in the browser
-        //    options.Cookie.Name = "AppointmentAppCookie";
+            // Cookie name in the browser
+            options.Cookie.Name = "AppointmentAppCookie";
 
-        //    // Refresh expiry on activity
-        //    options.SlidingExpiration = true;
+            // Refresh expiry on activity
+            options.SlidingExpiration = true;
 
-        //    options.Cookie.SecurePolicy = CookieSecurePolicy.None; // None for HTTP localhost
+            options.Cookie.SecurePolicy = CookieSecurePolicy.None; // None for HTTP localhost
 
-        //    options.Cookie.SameSite = SameSiteMode.Lax; // Add this for localhost
-        //});
+            options.Cookie.SameSite = SameSiteMode.Lax; // Add this for localhost
+        });
 
         // Add Repositories
         builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();

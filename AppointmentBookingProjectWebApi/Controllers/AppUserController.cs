@@ -3,16 +3,18 @@ using AppointmentBookingProjectWebApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace AppointmentBookingProjectWebApi.Controllers;
 
 /**
  * Features managed:
- * Login
- * 
+ * - Login
+ * - Logout
+ * - Get user info (indentity)
  */
 
-[Authorize]
+//[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class AppUserController : ControllerBase
@@ -33,7 +35,7 @@ public class AppUserController : ControllerBase
         _userManager = userManager;
     }
 
-    [HttpGet]
+    [HttpGet("all-users")]
     public async Task<IActionResult> GetAllUsers()
     {
         List<IdentityUser> allUsers = await _userRepository.GetAllUsers();
@@ -64,7 +66,15 @@ public class AppUserController : ControllerBase
             return Unauthorized("Invalid username or password.");
         }
 
-        return Ok(user);
+        IList<string> roles = await _userManager.GetRolesAsync(user);
+
+        // Just return what the frontend needs
+        return Ok(new
+        {
+            username = user.UserName,
+            email = user.Email,
+            role = roles.First()
+        });
     }
 
     [HttpPost("logout")]
@@ -72,5 +82,42 @@ public class AppUserController : ControllerBase
     {
         await _signInManager.SignOutAsync();
         return Ok("Logged out successfully.");
+    }
+
+    // Get currently logged in user
+    [HttpGet("current-user")]
+    public async Task<IActionResult> GetCurrentUser()
+    {
+        IdentityUser? currentUser = await _userManager.GetUserAsync(User);
+
+        if (currentUser == null)
+        {
+            return Unauthorized();
+        }
+
+        return Ok(currentUser);
+    }
+
+    // Gets user role (identity)
+    [HttpGet("{id}/role")]
+    public async Task<IActionResult> GetUserRole(string id)
+    {
+        IdentityUser? user = await _userManager.FindByIdAsync(id);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        IList<string> roles = await _userManager.GetRolesAsync(user);
+        string role = roles.FirstOrDefault();
+
+        if (role == null)
+        {
+            return NotFound("No role assigned to this user.");
+        }
+
+        //Console.WriteLine($"Role for user {id}: {role}");
+        return Ok(role);
     }
 }

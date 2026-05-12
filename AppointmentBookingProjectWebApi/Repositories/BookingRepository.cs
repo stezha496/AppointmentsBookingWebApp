@@ -30,4 +30,11 @@ public class BookingRepository(AppDbContext context) : IBookingRepository
             .Include(b => b.Patient)
             .ToListAsync();
     }
+
+    // TODO: May need to change this to accept a DTO
+    public async Task CreateBooking(Booking newBooking)
+    {
+        await context.Bookings.AddAsync(newBooking);
+        await context.SaveChangesAsync();
+    }
 }

@@ -19,11 +19,13 @@ public class PhysicianController : ControllerBase
     private readonly IPatientRepository _patientRepository;
     private readonly IPhysicianRepository _physicianRepository;
     private readonly IPhysicianAvailabilityRepository _physicianAvailabilityRepository;
+    private readonly IPatientDetailsRepository _patientDetailsRepository;
     private UserManager<IdentityUser> userManager;
 
     public PhysicianController(
         IBookingRepository bookingRepository,
         IPatientRepository patientRepository,
+        IPatientDetailsRepository patientDetailsRepository,
         IPhysicianRepository physicianRepository,
         IPhysicianAvailabilityRepository physicianAvailabilityRepository,
         UserManager<IdentityUser> userManager
@@ -33,6 +35,7 @@ public class PhysicianController : ControllerBase
         _patientRepository = patientRepository;
         _physicianRepository = physicianRepository;
         _physicianAvailabilityRepository = physicianAvailabilityRepository;
+        _patientDetailsRepository = patientDetailsRepository;
         this.userManager = userManager;
     }
 
@@ -62,5 +65,13 @@ public class PhysicianController : ControllerBase
     {
         List<Booking> bookings = await _bookingRepository.GetBookingsByPhysician(physicianId);
         return Ok(bookings);
+    }
+
+    [HttpGet("details/patient/{patientId}")]
+    public async Task<IActionResult> GetPatientDetails(int patientId)
+    {
+        List<PatientDetails> patientDetails =
+            await _patientDetailsRepository.GetAllPatientDetailsForPatient(patientId);
+        return Ok(patientDetails);
     }
 }

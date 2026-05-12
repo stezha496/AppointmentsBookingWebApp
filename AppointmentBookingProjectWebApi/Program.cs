@@ -58,7 +58,7 @@ public class Program
         //    options.ExpireTimeSpan = TimeSpan.FromHours(1);
 
         //    // Cookie name in the browser
-        //    options.Cookie.Name = "YourAppCookie";
+        //    options.Cookie.Name = "AppointmentAppCookie";
 
         //    // Refresh expiry on activity
         //    options.SlidingExpiration = true;
@@ -74,6 +74,8 @@ public class Program
         builder.Services.AddScoped<IPatientRepository, PatientRepository>();
         builder.Services.AddScoped<IPhysicianRepository, PhysicianRepository>();
         builder.Services.AddScoped<IPhysicianAvailabilityRepository, PhysicianAvailabilityRepository>();
+        builder.Services.AddScoped<IPatientDetailsRepository, PatientDetailsRepository>();
+
 
         // Swashbuckle (swagger)
         builder.Services.AddEndpointsApiExplorer();

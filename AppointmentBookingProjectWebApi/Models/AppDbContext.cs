@@ -29,5 +29,4 @@ public class AppDbContext(DbContextOptions<AppDbContext> options):
             .Property(b => b.Status)
             .HasConversion<string>();
     }
-
 }

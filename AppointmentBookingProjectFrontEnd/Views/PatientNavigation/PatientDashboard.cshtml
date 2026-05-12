@@ -1,7 +1,22 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Patient Dashboard";
 }
 
-<h1>Patient Dashboard</h1>
+<h2>Patient Dashboard</h2>
+<p>Welcome, @Context.Session.GetString("UserName")</p>
+
+<div>
+    <a asp-controller="PatientNavigation" asp-action="ViewMyBookings">
+        <div>
+            <h3>View My Bookings</h3>
+            <p>View all your current and past appointments</p>
+        </div>
+    </a>
+
+    <a asp-controller="PatientNavigation" asp-action="BookAppointment">
+        <div>
+            <h3>Book Appointment</h3>
+            <p>Schedule a new appointment with a physician</p>
+        </div>
+    </a>
+</div>

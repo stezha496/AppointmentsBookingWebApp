@@ -9,4 +9,11 @@ public class PatientRepository(AppDbContext context) : IPatientRepository
     {
         return await context.Patients.ToListAsync();
     }
+
+    public async Task<Patient?> GetPatientById(int patientId)
+    {
+        return await context.Patients
+            .Where(x => x.Id  == patientId)
+            .FirstOrDefaultAsync();
+    }
 }

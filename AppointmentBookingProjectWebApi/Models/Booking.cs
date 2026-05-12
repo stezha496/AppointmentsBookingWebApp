@@ -11,8 +11,8 @@ public class Booking
 
     public string? ReasonForVisit { get; set; }
 
-    // This will be set at the time of creation to DateTime.Now
-    public DateTime? Created { get; set; }
+    // This will be set at the time of creation
+    public DateTime Created { get; set; } = DateTime.Now;
 
     public DateTime? BookedTimeStart { get; set; }
 

@@ -1,4 +1,6 @@
 ﻿using AppointmentBookingProjectWebApi.Models;
+using AppointmentBookingProjectWebApi.Models.DtoMapping;
+using AppointmentBookingProjectWebApi.Models.DTOs;
 using AppointmentBookingProjectWebApi.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,19 +22,23 @@ public class PatientController : ControllerBase
     private readonly IPhysicianRepository _physicianRepository;
     private readonly IPhysicianAvailabilityRepository _physicianAvailabilityRepository;
     private readonly IBookingRepository _bookingRepository;
+    private readonly IPatientRepository _patientRepository;
+    private readonly IPatientDetailsRepository _patientDetailsRepository;
 
     public PatientController(
     IBookingRepository bookingRepository,
-    //IPatientRepository patientRepository,
+    IPatientRepository patientRepository,
     IPhysicianRepository physicianRepository,
-    IPhysicianAvailabilityRepository physicianAvailabilityRepository
+    IPhysicianAvailabilityRepository physicianAvailabilityRepository,
+    IPatientDetailsRepository patientDetailsRepository
     //UserManager<IdentityUser> userManager
     )
     {
         _bookingRepository = bookingRepository;
-        //_patientRepository = patientRepository;
+        _patientRepository = patientRepository;
         _physicianRepository = physicianRepository;
         _physicianAvailabilityRepository = physicianAvailabilityRepository;
+        _patientDetailsRepository = patientDetailsRepository;
         //this.userManager = userManager;
     }
 
@@ -64,5 +70,27 @@ public class PatientController : ControllerBase
         List<PhysicianAvailability> availabilities = 
             await _physicianAvailabilityRepository.GetAvailabilitiesByPhysician(physicianId);
         return Ok(availabilities);
+    }
+
+    [HttpPost("bookings/create")]
+    public async Task<IActionResult> CreateBooking([FromBody] BookingDto bookingDto)
+    {
+        Booking booking = BookingMapping.ToBooking(bookingDto);
+        // Add Patient field
+        booking.Patient = await _patientRepository.GetPatientById(bookingDto.PatientId);
+
+        await _bookingRepository.CreateBooking(booking);
+        return Ok(booking);
+    }
+
+    [HttpPost("details")]
+    public async Task<IActionResult> AddDetails([FromBody] PatientDetailsDto patientDetailsDto)
+    {
+        PatientDetails patientDetails = PatientDetailsMapping.ToPatientDetails(patientDetailsDto);
+        // Add Patient field
+        patientDetails.Patient = await _patientRepository.GetPatientById(patientDetailsDto.patientId);
+
+        await _patientDetailsRepository.AddPatientDetails(patientDetails);
+        return Ok(patientDetails);
     }
 }

@@ -20,9 +20,8 @@ public class PatientDetailsRepository(AppDbContext context) : IPatientDetailsRep
             .ToListAsync();
     }
 
-    // TODO: may need to change this to accept a DTO then map to PatientDetails obj
     // Will check in the front end if the patient details are valid.
-    public async Task SavePatientDetails(PatientDetails patientDetails)
+    public async Task AddPatientDetails(PatientDetails patientDetails)
     {
         await context.PatientDetails.AddAsync(patientDetails);
         await context.SaveChangesAsync();

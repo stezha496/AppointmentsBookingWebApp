@@ -1,5 +1,6 @@
 
 using AppointmentBookingProjectWebApi.Models;
+using AppointmentBookingProjectWebApi.Models.DtoMapping;
 using AppointmentBookingProjectWebApi.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -76,6 +77,8 @@ public class Program
         builder.Services.AddScoped<IPhysicianAvailabilityRepository, PhysicianAvailabilityRepository>();
         builder.Services.AddScoped<IPatientDetailsRepository, PatientDetailsRepository>();
 
+        // Mapping uses AppDbContext
+        builder.Services.AddScoped<BookingMapping>();
 
         // Swashbuckle (swagger)
         builder.Services.AddEndpointsApiExplorer();

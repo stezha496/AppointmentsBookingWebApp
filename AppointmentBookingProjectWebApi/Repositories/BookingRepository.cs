@@ -31,7 +31,6 @@ public class BookingRepository(AppDbContext context) : IBookingRepository
             .ToListAsync();
     }
 
-    // TODO: May need to change this to accept a DTO
     public async Task CreateBooking(Booking newBooking)
     {
         await context.Bookings.AddAsync(newBooking);

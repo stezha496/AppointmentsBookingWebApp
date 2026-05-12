@@ -5,7 +5,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentBookingProjectWebApi.Controllers;
-
+/**
+ * Features managed:
+ * - View current bookings
+ */
 //[Authorize]
 [ApiController]
 [Route("[controller]")]
@@ -54,11 +57,10 @@ public class PhysicianController : ControllerBase
         return Ok(allPhysicians);
     }
 
-    [HttpGet("all-physician-availabilities")]
-    public async Task<IActionResult> GetAllPhysicianAvailability()
+    [HttpGet("bookings/physician/{physicianId}")]
+    public async Task<IActionResult> GetBookingsByPhysician(int physicianId)
     {
-        List<PhysicianAvailability> allAvailability = await 
-            _physicianAvailabilityRepository.GetAllPhysicianAvailability();
-        return Ok(allAvailability);
+        List<Booking> bookings = await _bookingRepository.GetBookingsByPhysician(physicianId);
+        return Ok(bookings);
     }
 }

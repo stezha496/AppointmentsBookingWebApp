@@ -5,6 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentBookingProjectWebApi.Controllers;
 
+/**
+ * Features managed:
+ * Login
+ * 
+ */
+
 //[Authorize]
 [ApiController]
 [Route("api/[controller]")]

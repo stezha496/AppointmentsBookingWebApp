@@ -9,4 +9,11 @@ public class PhysicianAvailabilityRepository(AppDbContext context) : IPhysicianA
     {
         return await context.PhysicianAvailabilities.ToListAsync();
     }
+
+    public async Task<List<PhysicianAvailability>> GetAvailabilitiesByPhysician(int physicianId)
+    {
+        return await context.PhysicianAvailabilities
+            .Where(a => a.PhysicianId == physicianId)
+            .ToListAsync();
+    }
 }

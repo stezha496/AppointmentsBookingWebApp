@@ -12,4 +12,6 @@ public interface IBookingRepository
     Task<List<Booking>> GetBookingsByPhysicianUsername(string physicianUsername);
 
     Task CreateBooking(Booking newBooking);
+
+    Task<List<Booking>> GetUpcomingBookingsByPhysician(int physicianId);
 }

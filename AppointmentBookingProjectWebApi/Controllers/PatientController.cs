@@ -3,6 +3,7 @@ using AppointmentBookingProjectWebApi.Models;
 using AppointmentBookingProjectWebApi.Models.DtoMapping;
 using AppointmentBookingProjectWebApi.Models.DTOs;
 using AppointmentBookingProjectWebApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,7 @@ namespace AppointmentBookingProjectWebApi.Controllers;
  * - View all availabilities for a given physician
  * - Post form for patient details and reason for visiting
  */
+//[Authorize(Roles = "Patient")]
 [ApiController]
 [Route("[controller]")]
 public class PatientController : ControllerBase
@@ -109,7 +111,7 @@ public class PatientController : ControllerBase
     public async Task<IActionResult> CreateBooking([FromBody] CreateBookingDto bookingDto)
     {
         // Issue might occur here with Booking Id value
-        Booking booking = BookingMapping.ToBooking(bookingDto);
+        Booking booking = BookingMapping.ToCreateBooking(bookingDto);
         // Add Patient field
         if (bookingDto.PatientId != null)
         {
@@ -124,7 +126,8 @@ public class PatientController : ControllerBase
                 );
         }
 
-        // Save patient details
+        // Save patient details by mapping dto -> patientdetails
+        // TODO: create a mapping class for patient details and replace this
         PatientDetails patientDetails = new PatientDetails
         {
             Age = bookingDto.Age,

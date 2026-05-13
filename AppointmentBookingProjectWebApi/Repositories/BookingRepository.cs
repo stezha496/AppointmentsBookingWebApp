@@ -47,6 +47,8 @@ public class BookingRepository(AppDbContext context) : IBookingRepository
 
         return await context.Bookings
             .Where(x => x.PatientId == patientId)
+            .Include(b => b.Physician)
+            .Include(b => b.Patient)
             .ToListAsync();
     }
 
@@ -60,6 +62,17 @@ public class BookingRepository(AppDbContext context) : IBookingRepository
 
         return await context.Bookings
             .Where(x => x.PatientId == physicianId)
+            .Include(b => b.Physician)
+            .Include(b => b.Patient)
+            .ToListAsync();
+    }
+
+    public async Task<List<Booking>> GetUpcomingBookingsByPhysician(int physicianId)
+    {
+        return await context.Bookings
+            .Where(x => physicianId == x.PhysicianId && x.BookedTimeStart > DateTime.Now)
+            .Include(b => b.Physician)
+            .Include(b => b.Patient)
             .ToListAsync();
     }
 }

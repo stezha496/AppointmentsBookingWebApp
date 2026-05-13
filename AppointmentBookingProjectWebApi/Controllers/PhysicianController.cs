@@ -1,4 +1,6 @@
 ﻿using AppointmentBookingProjectWebApi.Models;
+using AppointmentBookingProjectWebApi.Models.DtoMapping;
+using AppointmentBookingProjectWebApi.Models.DTOs;
 using AppointmentBookingProjectWebApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +11,7 @@ namespace AppointmentBookingProjectWebApi.Controllers;
  * Features managed:
  * - View current bookings
  */
-//[Authorize]
+//[Authorize(Roles = "Physician")]
 [ApiController]
 [Route("[controller]")]
 public class PhysicianController : ControllerBase
@@ -60,11 +62,16 @@ public class PhysicianController : ControllerBase
         return Ok(allPhysicians);
     }
 
-    [HttpGet("bookings/physician/{physicianId}")]
+    [HttpGet("upcoming-bookings/{physicianId}")]
     public async Task<IActionResult> GetBookingsByPhysician(int physicianId)
     {
-        List<Booking> bookings = await _bookingRepository.GetBookingsByPhysician(physicianId);
-        return Ok(bookings);
+        List<Booking> bookings = 
+            await _bookingRepository.GetUpcomingBookingsByPhysician(physicianId);
+
+        //
+        List<BookingDto> bookingsDto = BookingMapping.ToBookingDtoList(bookings);
+
+        return Ok(bookingsDto);
     }
 
     [HttpGet("details/patient/{patientId}")]
@@ -72,6 +79,15 @@ public class PhysicianController : ControllerBase
     {
         List<PatientDetails> patientDetails =
             await _patientDetailsRepository.GetAllPatientDetailsForPatient(patientId);
+
         return Ok(patientDetails);
+    }
+
+    [HttpGet("id/{username}")]
+    public async Task<IActionResult> GetPhysicianIdByUsername(string username)
+    {
+        int? id = await _physicianRepository.GetPhysicianIdByUsername(username);
+
+        return Ok(id);
     }
 }

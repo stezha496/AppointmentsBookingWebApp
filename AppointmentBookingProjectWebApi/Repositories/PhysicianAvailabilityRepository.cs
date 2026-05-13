@@ -18,10 +18,11 @@ public class PhysicianAvailabilityRepository(AppDbContext context) : IPhysicianA
         return await context.PhysicianAvailabilities.ToListAsync();
     }
 
+    // Get all available time slots for a specific physician that is later then right now.
     public async Task<List<PhysicianAvailability>> GetAllTimeSlotsByPhysician(int physicianId)
     {
         return await context.PhysicianAvailabilities
-            .Where(a => a.PhysicianId == physicianId)
+            .Where(a => a.PhysicianId == physicianId && a.StartTime > DateTime.Now)
             .ToListAsync();
     }
 

@@ -4,99 +4,106 @@ using AppointmentBookingProjectFrontEnd.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace AppointmentBookingProjectFrontEnd.Controllers
+namespace AppointmentBookingProjectFrontEnd.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly ApiService _apiService;
+
+    public HomeController(ApiService apiService)
     {
-        private readonly ApiService _apiService;
+        _apiService = apiService;
+    }
 
-        public HomeController(ApiService apiService)
+    #region Login
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginDto model)
+    {
+        if (!ModelState.IsValid)
         {
-            _apiService = apiService;
+            return View(model);
         }
 
-        #region Login
-        [HttpGet]
-        public IActionResult Login()
+        // Step 1: Login
+        HttpResponseMessage loginResponse = await _apiService.Login(model);
+
+        if (!loginResponse.IsSuccessStatusCode)
         {
-            return View();
+            string error = await loginResponse.Content.ReadAsStringAsync();
+            ModelState.AddModelError("", error);
+            return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginDto model)
+        // Step 2: Extract everything from the login response directly
+        var loginResult = await _apiService.Deserialize<LoginResponseDto>(loginResponse);
+
+        if (loginResult == null)
+            return RedirectToAction("Error", "Home");
+
+        // Step 3: Store in session
+        HttpContext.Session.SetString("Email", loginResult.Email ?? "");
+        HttpContext.Session.SetString("UserName", loginResult.Username ?? "");
+        HttpContext.Session.SetString("UserRole", loginResult.Role ?? "");
+
+        if (loginResult.Role == "patient")
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            // Step 1: Login
-            HttpResponseMessage loginResponse = await _apiService.Login(model);
-
-            if (!loginResponse.IsSuccessStatusCode)
-            {
-                string error = await loginResponse.Content.ReadAsStringAsync();
-                ModelState.AddModelError("", error);
-                return View(model);
-            }
-
-            // Step 2: Extract everything from the login response directly
-            var loginResult = await _apiService.Deserialize<LoginResponseDto>(loginResponse);
-
-            if (loginResult == null)
-                return RedirectToAction("Error", "Home");
-
-            // Step 3: Store in session
-            HttpContext.Session.SetString("Email", loginResult.Email ?? "");
-            HttpContext.Session.SetString("UserName", loginResult.Username ?? "");
-            HttpContext.Session.SetString("UserRole", loginResult.Role ?? "");
             // For now, need to retrieve ID from Patient table seperately
-            HttpResponseMessage patientIdResponse = 
+            HttpResponseMessage patientIdResponse =
                 await _apiService.GetPatientIdByUsername(loginResult.Username);
             string? patientId = await _apiService.Deserialize<string?>(patientIdResponse);
             HttpContext.Session.SetString("UserId", patientId);
 
-            if (loginResult.Role == "patient")
-            {
-                return RedirectToAction("PatientDashboard", "PatientNavigation");
-            }
-            else if (loginResult.Role == "physician")
-            {
-                return RedirectToAction("PhysicianDashboard", "PhysicianNavigation");
-            }
-            else
-            {
-                return RedirectToAction("Error", "Home");
-            }
-        }
 
-        [HttpGet]
-        public async Task<IActionResult> Logout()
+            return RedirectToAction("PatientDashboard", "PatientNavigation");
+        }
+        else if (loginResult.Role == "physician")
         {
-            HttpResponseMessage response = await _apiService.Logout();
+            // For now, need to retrieve ID from Physician table seperately
+            HttpResponseMessage physicianIdResponse =
+                await _apiService.GetPhysicianIdByUsername(loginResult.Username);
+            string? physicianId = await _apiService.Deserialize<string?>(physicianIdResponse);
+            HttpContext.Session.SetString("UserId", physicianId);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Error", "Home");
-            }
-            return RedirectToAction("Login", "Home");
+            return RedirectToAction("PhysicianDashboard", "PhysicianNavigation");
         }
-
-        #endregion
-        public IActionResult Index()
+        else
         {
-            return View();
+            return RedirectToAction("Error", "Home");
         }
+    }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+    [HttpGet]
+    public async Task<IActionResult> Logout()
+    {
+        HttpResponseMessage response = await _apiService.Logout();
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        if (!response.IsSuccessStatusCode)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return RedirectToAction("Error", "Home");
         }
+        return RedirectToAction("Login", "Home");
+    }
+
+    #endregion
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    public IActionResult Privacy()
+    {
+        return View();
+    }
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

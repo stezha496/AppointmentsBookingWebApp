@@ -86,6 +86,11 @@ public class ApiService
 
         return await _httpClient.PostAsync("patient/booking/create", content);
     }
+
+    public async Task<HttpResponseMessage> GetBookingsByPhysicianId(int physicianId)
+    {
+        return await _httpClient.GetAsync($"physician/upcoming-bookings/{physicianId}");
+    }
     #endregion
 
     #region Patients
@@ -98,6 +103,8 @@ public class ApiService
     {
         return await _httpClient.GetAsync($"patient/id/{username}");
     }
+
+
     #endregion
 
     #region Physician Availability
@@ -105,5 +112,14 @@ public class ApiService
     {
         return await _httpClient.GetAsync($"patient/physician-all-availabilities/{physicianId}");
     }
+    #endregion
+
+    #region Physician
+
+    public async Task<HttpResponseMessage> GetPhysicianIdByUsername(string username)
+    {
+        return await _httpClient.GetAsync($"physician/id/{username}");
+    }
+
     #endregion
 }

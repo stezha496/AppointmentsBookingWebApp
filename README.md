@@ -45,6 +45,10 @@ Swashbuckle/Swagger was used to streamline API endpoint testing and debugging th
 * LINQ
 * Session-based Authentication
 
+## AI-Assisted Development
+
+AI tools were used to accelerate development through debugging assistance, rapid UI mockup generation, and boilerplate code creation. All generated code was reviewed, modified, and integrated manually to ensure correctness and maintainability.
+
 ---
 
 # How to Run

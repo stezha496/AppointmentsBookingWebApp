@@ -1,6 +1,8 @@
 ﻿namespace AppointmentBookingProjectFrontEnd.Models.Dtos;
 
-// Recieved by front end
+/// <summary>
+/// Recieved by front end for Booking appointment
+/// </summary>
 public class BookingDto
 {
     public int? BookingId { get; set; }

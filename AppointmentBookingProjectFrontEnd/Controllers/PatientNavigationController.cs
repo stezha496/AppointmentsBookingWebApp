@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentBookingProjectFrontEnd.Controllers;
 
+/// <summary>
+/// Handles actions done by the Patient user
+/// </summary>
 public class PatientNavigationController : Controller
 {
     private readonly ApiService _apiService;
@@ -43,6 +46,7 @@ public class PatientNavigationController : Controller
     [HttpGet]
     public async Task<IActionResult> BookAppointment(int physicianId, string physicianName)
     {
+        // Save selected physician information
         HttpContext.Session.SetString("SelectedPhysicianId", physicianId.ToString());
         HttpContext.Session.SetString("SelectedPhysicianName", physicianName);
 

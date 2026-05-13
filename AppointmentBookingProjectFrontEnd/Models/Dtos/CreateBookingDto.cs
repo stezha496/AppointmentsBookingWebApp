@@ -1,6 +1,8 @@
 ﻿namespace AppointmentBookingProjectFrontEnd.Models.Dtos;
 
-// Sent by front end
+/// <summary>
+/// Sent by front end to webapi for creating a Booking
+/// </summary>
 public class CreateBookingDto
 {
     public string? ReasonForVisit { get; set; }

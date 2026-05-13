@@ -5,6 +5,9 @@ using System.Text.Json;
 
 namespace AppointmentBookingProjectFrontEnd.Services;
 
+/// <summary>
+/// Helper class that sends http requests to the web api
+/// </summary>
 public class ApiService
 {
     private readonly HttpClient _httpClient;

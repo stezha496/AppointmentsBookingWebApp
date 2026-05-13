@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentBookingProjectFrontEnd.Controllers;
 
+/// <summary>
+/// Handles actions done by the Physician user
+/// </summary>
 public class PhysicianNavigationController : Controller
 {
     private readonly ApiService _apiService;
@@ -27,6 +30,7 @@ public class PhysicianNavigationController : Controller
 
         HttpResponseMessage response = await _apiService.GetBookingsByPhysicianId(physicianIdValue);
         List<BookingDto>? bookings = await _apiService.Deserialize<List<BookingDto>>(response);
+
         return View(bookings ?? new List<BookingDto>());
     }
 

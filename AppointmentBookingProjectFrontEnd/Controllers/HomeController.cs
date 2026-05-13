@@ -6,10 +6,13 @@ using System.Diagnostics;
 
 namespace AppointmentBookingProjectFrontEnd.Controllers;
 
+/// <summary>
+/// Handles login, logout, and error page navigation
+/// </summary>
+/// <param name="apiService"></param>
 public class HomeController : Controller
 {
     private readonly ApiService _apiService;
-
     public HomeController(ApiService apiService)
     {
         _apiService = apiService;
@@ -22,6 +25,13 @@ public class HomeController : Controller
         return View();
     }
 
+    /// <summary>
+    /// Authenticates the user and redirects them to the appropriate dashboard
+    /// based on their assigned role.
+    /// </summary>
+    /// <param name="model">User login credentials.</param>
+    /// <returns>
+    /// </returns>
     [HttpPost]
     public async Task<IActionResult> Login(LoginDto model)
     {
@@ -51,6 +61,7 @@ public class HomeController : Controller
         HttpContext.Session.SetString("UserName", loginResult.Username ?? "");
         HttpContext.Session.SetString("UserRole", loginResult.Role ?? "");
 
+        // Redirect and save id based on role
         if (loginResult.Role == "patient")
         {
             // For now, need to retrieve ID from Patient table seperately

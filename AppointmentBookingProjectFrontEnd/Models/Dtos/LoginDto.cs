@@ -2,6 +2,9 @@
 
 namespace AppointmentBookingProjectFrontEnd.Models.Dtos;
 
+/// <summary>
+/// Password and username for login
+/// </summary>
 public class LoginDto
 {
     [Required(ErrorMessage = "Please enter your username")]

@@ -47,7 +47,7 @@ Swashbuckle/Swagger was used to streamline API endpoint testing and debugging th
 
 ## AI-Assisted Development
 
-AI tools were used to accelerate development through debugging assistance, rapid UI mockup generation, and boilerplate code creation. All generated code was reviewed, modified, and integrated manually to ensure correctness and maintainability.
+AI tools were used to accelerate development through debugging assistance, rapid UI mockup generation, formatting, proofreading, and boilerplate code creation. All generated code was reviewed, modified, and integrated manually to ensure correctness and maintainability.
 
 ---
 

@@ -53,7 +53,7 @@ AI tools were used to accelerate development through debugging assistance, rapid
 
 # How to Run
 
-This project is currently configured for local development and demonstration purposes.
+This project is currently configured for local development purposes.
 
 Recommended IDE:
 
@@ -83,6 +83,8 @@ Potential feature additions include:
 * Improved UI/UX styling
 
 One of the primary architectural improvements would be redesigning how users are modeled within the system. During development, I identified that `Patient` and `Physician` entities would be better implemented through inheritance from `IdentityUser` rather than existing as separate database entities tied to authentication records. This would eliminate duplicate identifiers for a single user and create a cleaner authentication and authorization design.
+
+Another improvement would be deploying the web app for demonstration purposes.
 
 ---
 

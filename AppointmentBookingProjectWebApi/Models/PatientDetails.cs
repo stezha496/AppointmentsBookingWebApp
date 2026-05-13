@@ -1,6 +1,6 @@
 ﻿namespace AppointmentBookingProjectWebApi.Models;
 
-// A new one is created each time a patient books a appointment
+// A new one is created each time a patient books a appointment in case patient info changes
 public class PatientDetails
 {
     public int Id { get; set; }

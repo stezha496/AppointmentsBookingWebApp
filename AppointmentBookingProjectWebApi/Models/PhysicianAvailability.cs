@@ -1,5 +1,8 @@
 ﻿namespace AppointmentBookingProjectWebApi.Models;
 
+/// <summary>
+/// Entity representing a physician's available time slots
+/// </summary>
 public class PhysicianAvailability
 {
     public int Id { get; set; }

@@ -4,6 +4,9 @@ using AppointmentBookingProjectWebApi.Models.DTOs;
 namespace AppointmentBookingProjectWebApi.Mappings;
 
 // Note: Dto -> Entity Id casting may cause issues
+/// <summary>
+/// Maps Physician Entity related DTOs
+/// </summary>
 public static class PhysicianMapping
 {
     // Entity -> DTO

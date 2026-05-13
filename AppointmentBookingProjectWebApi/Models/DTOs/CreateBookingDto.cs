@@ -1,6 +1,9 @@
 ﻿namespace AppointmentBookingProjectWebApi.Models.DTOs;
 
-// Recieved by webapi
+/// <summary>
+/// Recieved by webapi from front end
+/// Front end -> WebAPI
+/// </summary>
 public class CreateBookingDto
 {
     public string? ReasonForVisit { get; set; }

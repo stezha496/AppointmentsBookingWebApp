@@ -2,7 +2,10 @@
 
 namespace AppointmentBookingProjectWebApi.Models.DTOs;
 
-// Sent by webapi
+/// <summary>
+/// Sent by webapi to front end
+/// WebAPI -> Front End
+/// </summary>
 public class BookingDto
 {
     public int? BookingId { get; set; }

@@ -3,6 +3,9 @@ using AppointmentBookingProjectWebApi.Models.DTOs;
 
 namespace AppointmentBookingProjectWebApi.Models.DtoMapping;
 // Note: Dto -> Entity Id casting may cause issues
+/// <summary>
+/// Maps Booking and Booking Entity related DTOs
+/// </summary>
 public class BookingMapping
 {
     // CreateBookingDto -> Booking

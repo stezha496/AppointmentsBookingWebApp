@@ -4,6 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentBookingProjectWebApi.Models;
 
+/// <summary>
+/// Database context for Entity Framework
+/// </summary>
+/// <param name="options"></param>
 public class AppDbContext(DbContextOptions<AppDbContext> options): 
     IdentityDbContext<IdentityUser>(options)
 {

@@ -2,6 +2,9 @@
 
 namespace AppointmentBookingProjectWebApi.Models;
 
+/// <summary>
+/// Entity representing a appointment booking
+/// </summary>
 public class Booking
 {
     public int Id { get; set; }

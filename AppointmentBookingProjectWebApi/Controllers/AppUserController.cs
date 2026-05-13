@@ -8,12 +8,15 @@ using System.Data;
 namespace AppointmentBookingProjectWebApi.Controllers;
 
 /**
+ * Manages account related features.
  * Features managed:
  * - Login
  * - Logout
  * - Get user info (indentity)
  */
-
+/// <summary>
+/// Manages account related features.
+/// </summary>
 //[Authorize]
 [ApiController]
 [Route("api/[controller]")]

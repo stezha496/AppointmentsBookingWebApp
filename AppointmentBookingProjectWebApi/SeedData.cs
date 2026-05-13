@@ -7,6 +7,11 @@ namespace AppointmentBookingProjectWebApi;
 
 public class SeedData
 {
+    /// <summary>
+    /// Seeds data in the database for testing
+    /// </summary>
+    /// <param name="app"></param>
+    /// <returns></returns>
     public static async Task SeedDatabase(IApplicationBuilder app)
     {
         using var scope = app.ApplicationServices.CreateScope();

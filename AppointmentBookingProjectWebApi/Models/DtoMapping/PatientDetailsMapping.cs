@@ -3,6 +3,9 @@
 namespace AppointmentBookingProjectWebApi.Models.DtoMapping;
 
 // Note: Dto -> Entity Id casting may cause issues
+/// <summary>
+/// Maps PatientDetails and PatientDetails Entity related DTOs
+/// </summary>
 public class PatientDetailsMapping
 {
     // PatientDetailsDto -> PatientDetails

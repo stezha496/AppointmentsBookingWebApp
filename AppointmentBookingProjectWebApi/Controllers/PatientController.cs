@@ -16,6 +16,9 @@ namespace AppointmentBookingProjectWebApi.Controllers;
  * - View all availabilities for a given physician
  * - Post form for patient details and reason for visiting
  */
+/// <summary>
+/// Manages Patient features that interact with the database
+/// </summary>
 //[Authorize(Roles = "Patient")]
 [ApiController]
 [Route("[controller]")]

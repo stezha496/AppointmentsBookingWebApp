@@ -1,5 +1,6 @@
 ﻿namespace AppointmentBookingProjectWebApi.Models.DTOs;
 
+// TODO Use IdentityUser instead
 public class PhysicianDto
 {
     public int? PhysicianId { get; set; }

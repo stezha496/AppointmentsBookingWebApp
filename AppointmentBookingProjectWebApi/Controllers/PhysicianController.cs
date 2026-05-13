@@ -11,6 +11,10 @@ namespace AppointmentBookingProjectWebApi.Controllers;
  * Features managed:
  * - View current bookings
  */
+
+/// <summary>
+/// Manages Physician related features that interact with the database
+/// </summary>
 //[Authorize(Roles = "Physician")]
 [ApiController]
 [Route("[controller]")]

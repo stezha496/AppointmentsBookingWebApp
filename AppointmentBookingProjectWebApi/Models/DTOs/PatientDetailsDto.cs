@@ -1,5 +1,8 @@
 ﻿namespace AppointmentBookingProjectWebApi.Models.DTOs;
 
+/// <summary>
+/// Used to represent Patient Details
+/// </summary>
 public class PatientDetailsDto
 {
     public int? PatientDetailsId { get; set; }

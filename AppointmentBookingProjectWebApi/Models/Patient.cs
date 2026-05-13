@@ -2,6 +2,7 @@
 
 namespace AppointmentBookingProjectWebApi.Models;
 
+// TODO Use IdentityUser instead
 public class Patient
 {
     public int Id { get; set; }

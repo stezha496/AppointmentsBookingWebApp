@@ -4,41 +4,66 @@
     ViewData["Title"] = "Upcoming Appointments";
 }
 
-<h2>Upcoming Appointments</h2>
+<div class="container mt-4">
 
-<a asp-controller="PhysicianNavigation" asp-action="PhysicianDashboard">
-    <button>Return to Dashboard</button>
-</a>
+    <div class="mb-4">
+        <a asp-controller="PhysicianNavigation"
+               asp-action="PhysicianDashboard"
+               class="btn btn-secondary mb-3">
+            Return to Dashboard
+        </a>
 
-@if (Model == null || !Model.Any())
-{
-    <p>You have no upcoming appointments.</p>
-}
-else
-{
-    <table>
-        <thead>
-            <tr>
-                <th>Patient</th>
-                <th>Reason For Visit</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Start Time</th>
-                <th>Duration (minutes)</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var booking in Model)
-            {
-                <tr>
-                    <td>@booking.PatientName</td>
-                    <td>@booking.ReasonForVisit</td>
-                    <td>@booking.Status</td>
-                    <td>@booking.BookedTimeStart?.ToString("yyyy-MM-dd")</td>
-                    <td>@booking.BookedTimeStart?.ToString("hh:mm tt")</td>
-                    <td>@booking.BookedTimeDuration</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+        <h2 class="fw-bold">Upcoming Appointments</h2>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            You have no upcoming appointments.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <table class="table table-striped table-hover align-middle mb-0">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Patient</th>
+                            <th>Reason For Visit</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Start Time</th>
+                            @* <th>Duration (minutes)</th> *@
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var booking in Model)
+                        {
+                            <tr>
+                                <td>@booking.PatientName</td>
+                                <td>@booking.ReasonForVisit</td>
+
+                                <td>
+                                    <span class="badge rounded-pill
+                                        @(booking.Status == "Confirmed" ? "bg-success" :
+                                                                                    booking.Status == "Cancelled" ? "bg-danger" :
+                                                                                    "bg-warning text-dark")">
+                                        @booking.Status
+                                    </span>
+                                </td>
+
+                                <td>@booking.BookedTimeStart?.ToString("yyyy-MM-dd")</td>
+                                <td>@booking.BookedTimeStart?.ToString("hh:mm tt")</td>
+                                @* <td>@booking.BookedTimeDuration</td> *@
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    }
+</div>

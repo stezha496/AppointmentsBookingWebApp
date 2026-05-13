@@ -1,0 +1,104 @@
+﻿@using AppointmentBookingProjectFrontEnd.Models.Dtos
+@model List<AppointmentBookingProjectFrontEnd.Models.Dtos.PhysicianAvailabilityDto>
+
+@{
+    ViewData["Title"] = "Book Appointment";
+    string? physicianName = Context.Session.GetString("SelectedPhysicianName");
+
+    CreateBookingDto newBooking = new CreateBookingDto
+    {
+            
+    };
+}
+
+<h2>Book Appointment</h2>
+
+<a asp-controller="PatientNavigation" asp-action="ChoosePhysician">
+    <button>Change Physician</button>
+</a>
+
+<p>Booking with: <strong>@physicianName</strong></p>
+
+<h3>Available Times</h3>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No available times for this physician.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Book</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var availability in Model)
+            {
+                <tr>
+                    <td>@availability.StartTime?.ToString("yyyy-MM-dd")</td>
+                    <td>@availability.StartTime?.ToString("hh:mm tt")</td>
+                    <td>@availability.EndTime?.ToString("hh:mm tt")</td>
+                    <td>
+                        <button type="button"
+                                class="select-time-btn"
+                                data-id="@availability.Id"
+                                data-start="@availability.StartTime"
+                                data-end="@availability.EndTime">
+                            Select Time
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<p id="selectedTimeDisplay"></p>
+
+<hr />
+
+<br />
+
+<form asp-controller="PatientNavigation" asp-action="BookAppointment" method="post">
+    <input type="hidden" id="selectedStartTime" name="BookedTimeStart" />
+    <input type="hidden" id="selectedEndTime" name="BookedTimeEnd" />
+    <input type="hidden" name="PhysicianId" value="@Context.Session.GetString("SelectedPhysicianId")" />
+    <input type="hidden" name="PatientId" value="@Context.Session.GetString("UserId")" />
+    <input type="hidden" id="selectedAvailabilityId" name="AvailabilityId" />
+
+    <div>
+        <label for="reasonForVisit">Enter reason for visiting</label>
+        <input type="text" id="reasonForVisit" name="ReasonForVisit" />
+    </div>
+
+    <br />
+
+    <button type="submit">Book Appointment</button>
+</form>
+
+<script>
+    let selectedButton = null;
+
+    document.querySelectorAll('.select-time-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            if (selectedButton && selectedButton !== this) {
+                selectedButton.style.display = 'inline';
+            }
+
+            document.getElementById('selectedAvailabilityId').value = this.dataset.id;
+            document.getElementById('selectedStartTime').value = this.dataset.start;
+            document.getElementById('selectedEndTime').value = this.dataset.end;
+
+            document.getElementById('selectedTimeDisplay').textContent =
+                `Selected Time: ${this.dataset.start} - ${this.dataset.end}`;
+
+            this.style.display = 'none';
+            selectedButton = this;
+        });
+    });
+</script>

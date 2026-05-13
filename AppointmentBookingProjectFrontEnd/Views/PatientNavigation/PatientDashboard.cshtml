@@ -6,14 +6,14 @@
 <p>Welcome, @Context.Session.GetString("UserName")</p>
 
 <div>
-    <a asp-controller="PatientNavigation" asp-action="ViewMyBookings">
+    <a asp-controller="PatientNavigation" asp-action="PatientBookings">
         <div>
             <h3>View My Bookings</h3>
             <p>View all your current and past appointments</p>
         </div>
     </a>
 
-    <a asp-controller="PatientNavigation" asp-action="BookAppointment">
+    <a asp-controller="PatientNavigation" asp-action="ChoosePhysician">
         <div>
             <h3>Book Appointment</h3>
             <p>Schedule a new appointment with a physician</p>

@@ -2,6 +2,7 @@
 
 namespace AppointmentBookingProjectWebApi.Models.DtoMapping;
 
+// Note: Dto -> Entity Id casting may cause issues
 public class PatientDetailsMapping
 {
     // PatientDetailsDto -> PatientDetails
@@ -9,12 +10,13 @@ public class PatientDetailsMapping
     {
         return new PatientDetails
         {
+            Id = (int)dto.PatientDetailsId,
             Age = dto.Age,
             Gender = dto.Gender,
             Height = dto.Height,
             Weight = dto.Weight,
             PhoneNumber = dto.PhoneNumber,
-            patientId = dto.patientId,
+            patientId = dto.PatientId,
             //Created = DateTime.Now,
         };
     }
@@ -24,12 +26,13 @@ public class PatientDetailsMapping
     {
         return new PatientDetailsDto
         {
+            PatientDetailsId = patientDetails.Id,
             Age = patientDetails.Age ?? 0,
             Gender = patientDetails.Gender ?? string.Empty,
             Height = patientDetails.Height ?? 0,
             Weight = patientDetails.Weight ?? 0,
             PhoneNumber = patientDetails.PhoneNumber ?? string.Empty,
-            patientId = patientDetails.patientId ?? 0,
+            PatientId = patientDetails.patientId ?? 0,
         };
     }
 

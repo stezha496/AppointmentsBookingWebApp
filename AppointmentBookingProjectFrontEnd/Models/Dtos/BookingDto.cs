@@ -1,8 +1,6 @@
-﻿using AppointmentBookingProjectWebApi.Enums;
+﻿namespace AppointmentBookingProjectFrontEnd.Models.Dtos;
 
-namespace AppointmentBookingProjectWebApi.Models.DTOs;
-
-// Sent by webapi
+// Recieved by front end
 public class BookingDto
 {
     public int? BookingId { get; set; }

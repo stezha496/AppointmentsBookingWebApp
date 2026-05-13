@@ -2,11 +2,11 @@
 using AppointmentBookingProjectWebApi.Models.DTOs;
 
 namespace AppointmentBookingProjectWebApi.Models.DtoMapping;
-
+// Note: Dto -> Entity Id casting may cause issues
 public class BookingMapping
 {
     // BookingDto -> Booking
-    public static Booking ToBooking(BookingDto dto)
+    public static Booking ToBooking(CreateBookingDto dto)
     {
         return new Booking
         {
@@ -15,8 +15,8 @@ public class BookingMapping
             BookedTimeDuration = dto.BookedTimeDuration,
             PhysicianId = dto.PhysicianId,
             PatientId = dto.PatientId,
-            //Created = DateTime.Now,
-            //Status = BookingStatus.Pending
+            Created = DateTime.Now,          // set by server
+            Status = BookingStatus.Pending   // set by server
         };
     }
 
@@ -25,6 +25,7 @@ public class BookingMapping
     {
         return new BookingDto
         {
+            BookingId = booking.Id,
             ReasonForVisit = booking.ReasonForVisit ?? string.Empty,
             BookedTimeStart = booking.BookedTimeStart ?? DateTime.MinValue,
             BookedTimeDuration = booking.BookedTimeDuration ?? 0,
@@ -36,7 +37,7 @@ public class BookingMapping
     }
 
     // List<BookingDto> -> List<Booking>
-    public static List<Booking> ToBookingList(List<BookingDto> dtos)
+    public static List<Booking> ToBookingList(List<CreateBookingDto> dtos)
     {
         return dtos.Select(dto => ToBooking(dto)).ToList();
     }

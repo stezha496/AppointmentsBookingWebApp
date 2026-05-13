@@ -1,0 +1,42 @@
+﻿@model List<AppointmentBookingProjectFrontEnd.Models.Dtos.BookingDto>
+
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<a asp-controller="PatientNavigation" asp-action="PatientDashboard">
+    <button>Return to Dashboard</button>
+</a>
+
+<h2>My Bookings</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>You have no bookings.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Reason For Visit</th>
+                <th>Status</th>
+                <th>Booked Time</th>
+                <th>Duration (minutes)</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model)
+            {
+                <tr>
+                    <td>@booking.ReasonForVisit</td>
+                    <td>@booking.Status</td>
+                    <td>@booking.BookedTimeStart</td>
+                    <td>@booking.BookedTimeDuration</td>
+                    <td>@booking.Created</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

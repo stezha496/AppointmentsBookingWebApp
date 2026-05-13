@@ -26,4 +26,17 @@ public class PatientDetailsRepository(AppDbContext context) : IPatientDetailsRep
         await context.PatientDetails.AddAsync(patientDetails);
         await context.SaveChangesAsync();
     }
+
+    public async Task<List<PatientDetails>> GetAllPatientDetailsForPatientByUsername(string patientUsername)
+    {
+        // First find the patientId related to the username
+        int patientId = await context.Patients
+            .Where(x => x.Username == patientUsername)
+            .Select(x => x.Id)
+            .FirstOrDefaultAsync();
+
+        return await context.PatientDetails
+            .Where(x => x.patientId == patientId)
+            .ToListAsync();
+    }
 }

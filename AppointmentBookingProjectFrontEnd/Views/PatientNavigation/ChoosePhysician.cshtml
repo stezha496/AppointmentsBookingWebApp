@@ -1,0 +1,45 @@
+﻿@model List<AppointmentBookingProjectFrontEnd.Models.Dtos.PhysicianDto>
+
+@{
+    ViewData["Title"] = "Choose Physician";
+}
+
+<h2>Choose a Physician</h2>
+
+<a asp-controller="PatientNavigation" asp-action="PatientDashboard">
+    <button>Return to Dashboard</button>
+</a>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No physicians available.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Select</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var physician in Model)
+            {
+                <tr>
+                    <td>@physician.Name</td>
+                    <td>@physician.PhoneNumber</td>
+                    <td>
+                        <a asp-controller="PatientNavigation"
+                               asp-action="BookAppointment"
+                               asp-route-physicianId="@physician.PhysicianId"
+                               asp-route-physicianName="@physician.Name">
+                            <button>Select</button>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -70,4 +70,40 @@ public class ApiService
         return await _httpClient.GetAsync($"api/appusers/{userId}/role");
     }
     #endregion
+
+    #region Bookings
+    public async Task<HttpResponseMessage> GetBookingsByPatientUsername(string patientUsername)
+    {
+        return await _httpClient.GetAsync($"patient/bookings/username/{patientUsername}");
+    }
+
+    public async Task<HttpResponseMessage> CreateBooking(CreateBookingDto model)
+    {
+        string json = JsonSerializer.Serialize(model);
+        StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        Console.WriteLine($"Body: {json}");
+
+        return await _httpClient.PostAsync("patient/booking/create", content);
+    }
+    #endregion
+
+    #region Patients
+    public async Task<HttpResponseMessage> GetAllPhysicians()
+    {
+        return await _httpClient.GetAsync($"patient/all-physicians");
+    }
+
+    public async Task<HttpResponseMessage> GetPatientIdByUsername(string username)
+    {
+        return await _httpClient.GetAsync($"patient/id/{username}");
+    }
+    #endregion
+
+    #region Physician Availability
+    public async Task<HttpResponseMessage> GetPhysicianAvailability(int physicianId)
+    {
+        return await _httpClient.GetAsync($"patient/physician-all-availabilities/{physicianId}");
+    }
+    #endregion
 }

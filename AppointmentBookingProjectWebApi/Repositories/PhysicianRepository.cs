@@ -10,6 +10,14 @@ public class PhysicianRepository(AppDbContext context) : IPhysicianRepository
         return await context.Physicians.ToListAsync();
     }
 
+    public async Task<int?> GetPhysiciaIdByUsername(string username)
+    {
+        return await context.Physicians
+            .Where(x => x.Username == username)
+            .Select(x => x.Id)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<Physician?> GetPhysicianById(int physicianId)
     {
         return await context.Physicians

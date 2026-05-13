@@ -47,9 +47,14 @@ namespace AppointmentBookingProjectFrontEnd.Controllers
                 return RedirectToAction("Error", "Home");
 
             // Step 3: Store in session
-            HttpContext.Session.SetString("Emaik", loginResult.Email ?? "");
+            HttpContext.Session.SetString("Email", loginResult.Email ?? "");
             HttpContext.Session.SetString("UserName", loginResult.Username ?? "");
             HttpContext.Session.SetString("UserRole", loginResult.Role ?? "");
+            // For now, need to retrieve ID from Patient table seperately
+            HttpResponseMessage patientIdResponse = 
+                await _apiService.GetPatientIdByUsername(loginResult.Username);
+            string? patientId = await _apiService.Deserialize<string?>(patientIdResponse);
+            HttpContext.Session.SetString("UserId", patientId);
 
             if (loginResult.Role == "patient")
             {

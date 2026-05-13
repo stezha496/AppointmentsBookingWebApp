@@ -36,4 +36,30 @@ public class BookingRepository(AppDbContext context) : IBookingRepository
         await context.Bookings.AddAsync(newBooking);
         await context.SaveChangesAsync();
     }
+
+    public async Task<List<Booking>> GetBookingsByPatientUsername(string patientUsername)
+    {
+        // First find the patientId related to the username
+        int patientId = await context.Patients
+            .Where(x => x.Username == patientUsername)
+            .Select(x => x.Id)
+            .FirstOrDefaultAsync();
+
+        return await context.Bookings
+            .Where(x => x.PatientId == patientId)
+            .ToListAsync();
+    }
+
+    public async Task<List<Booking>> GetBookingsByPhysicianUsername(string physicianUsername)
+    {
+        // First find the patientId related to the username
+        int physicianId = await context.Physicians
+            .Where(x => x.Username == physicianUsername)
+            .Select(x => x.Id)
+            .FirstOrDefaultAsync();
+
+        return await context.Bookings
+            .Where(x => x.PatientId == physicianId)
+            .ToListAsync();
+    }
 }

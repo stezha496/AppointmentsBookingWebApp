@@ -16,4 +16,12 @@ public class PatientRepository(AppDbContext context) : IPatientRepository
             .Where(x => x.Id  == patientId)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<int?> GetPatientIdByUsername(string username)
+    {
+        return await context.Patients
+            .Where(x => x.Username == username)
+            .Select(x => x.Id)
+            .FirstOrDefaultAsync();
+    }
 }

@@ -1,4 +1,5 @@
-﻿using AppointmentBookingProjectWebApi.Models;
+﻿using AppointmentBookingProjectWebApi.Mappings;
+using AppointmentBookingProjectWebApi.Models;
 using AppointmentBookingProjectWebApi.Models.DtoMapping;
 using AppointmentBookingProjectWebApi.Models.DTOs;
 using AppointmentBookingProjectWebApi.Repositories;
@@ -42,14 +43,24 @@ public class PatientController : ControllerBase
         //this.userManager = userManager;
     }
 
+    [HttpGet("id/{username}")]
+    public async Task<IActionResult> GetPatientIdByUsername(string username)
+    {
+        int? id = await _patientRepository.GetPatientIdByUsername(username);
+
+        return Ok(id);
+    }
+
     [HttpGet("all-physicians")]
     public async Task<IActionResult> GetAllPhysicians()
     {
         List<Physician> allPhysicians = await _physicianRepository.GetAllPhysicians();
-        return Ok(allPhysicians);
+        List<PhysicianDto> allPhysicianDtos = PhysicianMapping.ToDtoList(allPhysicians);
+
+        return Ok(allPhysicianDtos);
     }
 
-    [HttpGet("all-physician-availabilities")]
+    [HttpGet("get-every-physician-availability")]
     public async Task<IActionResult> GetAllPhysicianAvailability()
     {
         List<PhysicianAvailability> allAvailability = await
@@ -57,30 +68,64 @@ public class PatientController : ControllerBase
         return Ok(allAvailability);
     }
 
-    [HttpGet("bookings/patient/{patientId}")]
+    [HttpGet("physician-all-availabilities/{physicianId}")]
+    public async Task<IActionResult> GetAllAvailabilitiesByPhysician(int physicianId)
+    {
+        List<PhysicianAvailability> availabilities = 
+            await _physicianAvailabilityRepository.GetAllAvailabilitiesByPhysician(physicianId);
+        List<PhysicianAvailabilityDto> availabilitiesDto = 
+            PhysiciansAvailabilitiesMapping.ToDtoList(availabilities);
+
+        return Ok(availabilitiesDto);
+    }
+
+    [HttpGet("bookings/patientId/{patientId}")]
     public async Task<IActionResult> GetBookingsByPatient(int patientId)
     {
         List<Booking> bookings = await _bookingRepository.GetBookingsByPatient(patientId);
-        return Ok(bookings);
+        List<BookingDto> bookingDtos = BookingMapping.ToBookingDtoList(bookings);
+
+        return Ok(bookingDtos);
+    }
+
+    [HttpGet("bookings/username/{patientUsername}")]
+    public async Task<IActionResult> GetBookingsByPatientUsername(string patientUsername)
+    {
+        List<Booking> bookings = await _bookingRepository.GetBookingsByPatientUsername(patientUsername);
+        List<BookingDto> bookingDtos = BookingMapping.ToBookingDtoList(bookings);
+
+        return Ok(bookingDtos);
     }
 
     [HttpGet("bookings/availabilities/{physicianId}")]
     public async Task<IActionResult> GetPhysicianAvailabilities(int physicianId)
     {
         List<PhysicianAvailability> availabilities = 
-            await _physicianAvailabilityRepository.GetAvailabilitiesByPhysician(physicianId);
+            await _physicianAvailabilityRepository.GetAllTimeSlotsByPhysician(physicianId);
         return Ok(availabilities);
     }
 
-    [HttpPost("bookings/create")]
-    public async Task<IActionResult> CreateBooking([FromBody] BookingDto bookingDto)
+    [HttpPost("booking/create")]
+    public async Task<IActionResult> CreateBooking([FromBody] CreateBookingDto bookingDto)
     {
+        // Issue might occur here with Booking Id value
         Booking booking = BookingMapping.ToBooking(bookingDto);
         // Add Patient field
-        booking.Patient = await _patientRepository.GetPatientById(bookingDto.PatientId);
+        if (bookingDto.PatientId != null)
+        {
+            booking.Patient = await _patientRepository.GetPatientById((int)bookingDto.PatientId);
+        }
+
+        // Update physician availability
+        if (bookingDto.AvailabilityId != null)
+        {
+            await _physicianAvailabilityRepository.SetAvailabilityBooked(
+                bookingDto.AvailabilityId.Value
+                );
+        }
 
         await _bookingRepository.CreateBooking(booking);
-        return Ok(booking);
+        return Ok();
     }
 
     [HttpPost("details")]
@@ -88,7 +133,7 @@ public class PatientController : ControllerBase
     {
         PatientDetails patientDetails = PatientDetailsMapping.ToPatientDetails(patientDetailsDto);
         // Add Patient field
-        patientDetails.Patient = await _patientRepository.GetPatientById(patientDetailsDto.patientId);
+        patientDetails.Patient = await _patientRepository.GetPatientById(patientDetailsDto.PatientId);
 
         await _patientDetailsRepository.AddPatientDetails(patientDetails);
         return Ok(patientDetails);

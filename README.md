@@ -62,9 +62,11 @@ Recommended IDE:
 Steps:
 
 1. Clone the repository
-2. Open the Web API project in Visual Studio and run it
-3. Open the Front End MVC project in Visual Studio and run it
-4. Ensure the Front End project targets the same localhost/API port configured in the Web API `launchSettings.json`
+2. Open the Web API project in Visual Studio
+3. Run in the powershell console: dotnet ef database update
+4. Run the WebAPI project in Visual Studio
+5. Open the Front End MVC project in Visual Studio and run it
+6. Ensure the Front End project targets the same localhost/API port configured in the Web API `launchSettings.json`
 
 ---
 

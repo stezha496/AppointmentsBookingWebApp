@@ -124,6 +124,23 @@ public class PatientController : ControllerBase
                 );
         }
 
+        // Save patient details
+        PatientDetails patientDetails = new PatientDetails
+        {
+            Age = bookingDto.Age,
+            Gender = bookingDto.Gender,
+            Height = bookingDto.Height,
+            Weight = bookingDto.Weight,
+            PhoneNumber = bookingDto.PhoneNumber,
+            patientId = bookingDto.PatientId,
+            Patient = booking.Patient
+        };
+        await _patientDetailsRepository.AddPatientDetails(patientDetails);
+
+        // Update physician availability
+        if (bookingDto.AvailabilityId != null)
+            await _physicianAvailabilityRepository.SetAvailabilityBooked(bookingDto.AvailabilityId.Value);
+
         await _bookingRepository.CreateBooking(booking);
         return Ok();
     }
